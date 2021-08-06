@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import Home from './pages/Home';
+import { StateProvider } from './context/AppContext';
+import Model from './pages/Model';
 
-function App() {
+export default function App() {
+  const initialAppState = {
+    sortModelsBy: 'trending',
+    homePageLoading: true,
+    models: [],
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div>
+        <Switch>
+          <Route exact path="/">
+            <StateProvider initialState={initialAppState}>
+              <Home className="home-page" />
+            </StateProvider>
+          </Route>
+          <Route path="/model/:modelId">
+            <StateProvider initialState={initialAppState}>
+              <Model className="model-page" />
+            </StateProvider>
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 }
-
-export default App;
